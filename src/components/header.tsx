@@ -1,21 +1,42 @@
 "use client";
-import { SunIcon, MoonIcon } from "@radix-ui/react-icons";
-import { useTheme } from "next-themes";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { routes } from "@/constants/routes";
 import { Button } from "./ui/button";
 import { usePathname, useRouter } from "next/navigation";
+import ToggleTheme from "./toggleTheme";
+
+import { useToast } from "./ui/use-toast";
+import { isAxiosError } from "axios";
+import axios from "axios";
+import Menu from "./menu";
 const Header = () => {
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
-  const toggleTheme = () => {
-    theme == "light" ? setTheme("dark") : setTheme("light");
-  };
   const [mounted, setMounted] = useState(false);
   const [isPublicPath, setIsPublicPath] = useState(false);
+  const { toast } = useToast();
   const path = usePathname();
-  const isLightTheme = theme === "light";
+  const onLogOut = async () => {
+    try {
+      const domain = process.env.PRODUCTION_URL || "";
+      const url = domain + "/api/users/logout";
+      const response = await axios.post(url);
+      if (response.status == 200) {
+        toast({
+          title: "Goodbye",
+          description: "See you soon",
+        });
+        setTimeout(() => {
+          router.push(routes.LOGINPAGE);
+        }, 2000);
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+      }
+    }
+  };
+
   useEffect(() => {
     if (path === routes.LOGINPAGE) {
       setIsPublicPath(true);
@@ -33,20 +54,19 @@ const Header = () => {
       <div>
         <Link
           href={routes.HOME}
-          className="font-bold text-lg border-b-2 border-slate-900 dark:border-white uppercase pb-2"
+          className="font-bold text-lg border-b-2 border-blue-600 uppercase pb-2"
         >
-          Goals
+          Home
         </Link>
       </div>
-      <div className="flex items-center gap-5">
-        <Button variant="outline">Logout</Button>
-        <button onClick={toggleTheme}>
-          {isLightTheme ? (
-            <SunIcon className="h-8 w-8"></SunIcon>
-          ) : (
-            <MoonIcon className="h-8 w-8"></MoonIcon>
-          )}
-        </button>
+      <div className="hidden md:flex items-center gap-5">
+        <Link href={routes.MIDDAYMEAL}>Mid-day-meal</Link>
+        <Link href={routes.INVESTMENTPAGE}>Investment</Link>
+        <Button onClick={onLogOut}>Logout</Button>
+        <ToggleTheme />
+      </div>
+      <div className="flex md:hidden">
+        <Menu />
       </div>
     </nav>
   );

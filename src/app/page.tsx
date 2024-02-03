@@ -1,44 +1,34 @@
-"use client";
-
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import axios from "axios";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
-import { routes } from "@/constants/routes";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+
 const HomePage = () => {
-  const { toast } = useToast();
-  const router = useRouter();
-  const onLogOut = async () => {
-    const response = await axios.post("http://localhost:3000/api/users/logout");
-    if (response.status == 200) {
-      toast({
-        title: "Goodbye",
-        description: "See you soon",
-      });
-      setTimeout(() => {
-        router.push(routes.LOGINPAGE);
-      }, 2000);
-    }
-  };
   return (
-    <div>
-      <Card>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Card className="p-30">
         <CardHeader>
-          <CardTitle>Title</CardTitle>
-          <CardDescription>Description</CardDescription>
+          <CardTitle className="text-blue-500">
+            Students Attendance visualization
+          </CardTitle>
         </CardHeader>
-        <CardContent>
-          <Button onClick={onLogOut}>Logout</Button>
-        </CardContent>
+      </Card>
+      <Card className="p-30 h-[400px]">
+        <CardHeader>
+          <CardTitle className="text-blue-500">
+            {"Today's mid day meal stats"}
+          </CardTitle>
+        </CardHeader>
+      </Card>
+      <Card className="p-30 h-[400px]">
+        <CardHeader>
+          <CardTitle className="text-blue-500 ">
+            {"Today's investment stats"}
+          </CardTitle>
+        </CardHeader>
+      </Card>
+      <Card className="p-30 h-[400px]">
+        <CardHeader>
+          <CardTitle className="text-blue-500">{"Overall report"}</CardTitle>
+        </CardHeader>
       </Card>
     </div>
   );

@@ -11,26 +11,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 import { useRouter } from "next/navigation";
 const LoginPage = () => {
   const router = useRouter();
   const { toast } = useToast();
   const onLogin = async () => {
-    const body = {};
-    const response = await axios.post(
-      "http://localhost:3000/api/users/login",
-      body
-    );
-    if (response.status == 200) {
-      toast({
-        title: "Success",
-        description: "Logged in successfully",
-      });
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
+    try {
+      const domain = process.env.PRODUCTION_URL || "";
+      const url = domain + "/api/users/login";
+
+      const response = await axios.post(url);
+      if (response.status == 200) {
+        toast({
+          title: "Success",
+          description: "Logged in successfully",
+        });
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+      }
     }
   };
   return (
