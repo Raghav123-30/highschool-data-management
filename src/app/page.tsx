@@ -1,5 +1,6 @@
 import React from "react";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 const HomePage = async () => {
   const date = new Date();
@@ -10,12 +11,8 @@ const HomePage = async () => {
   });
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <Card className="p-30">
-        <CardHeader>
-          <CardTitle className="text-blue-500">
-            Students Attendance visualization as of {formattedDate}
-          </CardTitle>
-        </CardHeader>
+      <Card className="p-30 flex flex-col justify-center items-center">
+        <CardContent></CardContent>
       </Card>
       <Card className="p-30 h-[400px]">
         <CardHeader>

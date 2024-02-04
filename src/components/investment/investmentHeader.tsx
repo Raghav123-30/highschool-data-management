@@ -1,11 +1,21 @@
-import { DownloadIcon } from "@radix-ui/react-icons";
+import { PlusIcon } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
 
-const InvestmentHeader = () => {
+type InvestmentHeaderProps = {
+  showAddAttendanceButton: boolean;
+};
+const InvestmentHeader = ({
+  showAddAttendanceButton,
+}: InvestmentHeaderProps) => {
   return (
-    <Button className="text-white">
-      <DownloadIcon className="w-5 h-5" />
-    </Button>
+    <div>
+      {showAddAttendanceButton && (
+        <Button className="text-white flex gap-2 items-center">
+          <PlusIcon className="w-5 h-5" />
+          <p>Add attendance</p>
+        </Button>
+      )}
+    </div>
   );
 };
 

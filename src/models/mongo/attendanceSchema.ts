@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 
 const attendanceSchema = new mongoose.Schema({
-  attendanceId: String,
   highSchoolId: String,
-  attendancePercentage: Number,
+  numberOfAttendees: Number,
   date: Date,
 });
 
