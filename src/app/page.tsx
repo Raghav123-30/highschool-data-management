@@ -1,6 +1,10 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import HomePageHeader from "@/components/home/homePageHeader";
+import HomePageFilter from "@/components/home/homePageFilter";
+import MonthlyAttendanceChart from "@/components/charts/monthlyAttendanceChart";
+import YearlyAttendanceChart from "@/components/charts/yearlyAttendanceChart";
 
 const HomePage = async () => {
   const date = new Date();
@@ -10,30 +14,20 @@ const HomePage = async () => {
     year: "numeric",
   });
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <Card className="p-30 flex flex-col justify-center items-center">
-        <CardContent></CardContent>
-      </Card>
-      <Card className="p-30 h-[400px]">
-        <CardHeader>
-          <CardTitle className="text-blue-500">
-            {"Today's mid day meal stats"}
-          </CardTitle>
-        </CardHeader>
-      </Card>
-      <Card className="p-30 h-[400px]">
-        <CardHeader>
-          <CardTitle className="text-blue-500 ">
-            {"Today's investment stats"}
-          </CardTitle>
-        </CardHeader>
-      </Card>
-      <Card className="p-30 h-[400px]">
-        <CardHeader>
-          <CardTitle className="text-blue-500">{"Overall report"}</CardTitle>
-        </CardHeader>
-      </Card>
-    </div>
+    <Card>
+      <CardContent className="px-8 py-10 flex flex-col gap-5">
+        <div className="flex justify-end">
+          <HomePageHeader />
+        </div>
+        <div className="flex justify-start">
+          <HomePageFilter />
+        </div>
+        <div>
+          <MonthlyAttendanceChart />
+          <YearlyAttendanceChart />
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

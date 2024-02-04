@@ -14,15 +14,20 @@ import { useToast } from "@/components/ui/use-toast";
 import axios, { isAxiosError } from "axios";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 const LoginPage = () => {
   const router = useRouter();
   const { toast } = useToast();
+  const [user, setUser] = useState({
+    userName: "",
+    password: "",
+  });
   const onLogin = async () => {
     try {
       const domain = process.env.PRODUCTION_URL || "";
       const url = domain + "/api/users/login";
 
-      const response = await axios.post(url);
+      const response = await axios.post(url, user);
       if (response.status == 200) {
         toast({
           title: "Success",
@@ -45,8 +50,27 @@ const LoginPage = () => {
           <CardDescription>We missed you</CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
-          <Input placeholder="Email"></Input>
-          <Input placeholder="Password" type="password"></Input>
+          <Input
+            placeholder="Email"
+            value={user.userName}
+            onChange={(e) =>
+              setUser({
+                ...user,
+                userName: e.target.value,
+              })
+            }
+          ></Input>
+          <Input
+            placeholder="Password"
+            type="password"
+            value={user.password}
+            onChange={(e) =>
+              setUser({
+                ...user,
+                password: e.target.value,
+              })
+            }
+          ></Input>
           <Button onClick={onLogin}>Login</Button>
         </CardContent>
       </Card>

@@ -60,7 +60,7 @@ const Header = () => {
         </Link>
       </div>
       <div className="hidden md:flex items-center gap-5">
-        <Link href={routes.MIDDAYMEAL}>Mid-day-meal</Link>
+        <Link href={routes.MIDDAYMEAL}>Meal stock</Link>
         <Link href={routes.INVESTMENTPAGE}>Investment</Link>
         <Button onClick={onLogOut}>Logout</Button>
         <ToggleTheme />

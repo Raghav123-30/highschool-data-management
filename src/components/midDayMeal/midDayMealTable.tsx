@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -7,8 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useState } from "react";
 
 const MidDayMealTable = () => {
+  const [mealData, setMealData] = useState([]);
   return (
     <Table>
       <TableCaption>{"Today's mid day meal report"}</TableCaption>

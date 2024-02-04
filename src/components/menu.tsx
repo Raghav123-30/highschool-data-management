@@ -50,9 +50,7 @@ const Menu = () => {
               <div className="self-center">
                 <ToggleTheme />
               </div>
-              <Link href={routes.MIDDAYMEAL}>
-                {routes.MIDDAYMEAL.split("/").pop()}
-              </Link>
+              <Link href={routes.MIDDAYMEAL}>Meal stock</Link>
               <Link href={routes.INVESTMENTPAGE}>
                 {routes.INVESTMENTPAGE.split("/").pop()}
               </Link>

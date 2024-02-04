@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -7,8 +8,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useState } from "react";
 
 const InvestmentTable = () => {
+  const [investmentData, setInvestmentData] = useState([]);
   return (
     <Table>
       <TableCaption>{"Today's investment report "}</TableCaption>
