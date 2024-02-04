@@ -4,6 +4,10 @@ const midDayMealItemSchema = new mongoose.Schema({
   highSchoolId: String,
   itemName: String,
   totalStock: Number,
+  totalStudents: {
+    type: Number,
+    default: 0,
+  },
   date: Date,
 });
 
