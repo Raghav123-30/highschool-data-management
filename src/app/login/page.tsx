@@ -22,6 +22,8 @@ const LoginPage = () => {
     userName: "",
     password: "",
   });
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const onLogin = async () => {
     try {
       const domain = process.env.PRODUCTION_URL || "";
@@ -39,6 +41,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       if (isAxiosError(error)) {
+        setError(error.response?.data.message);
       }
     }
   };
@@ -72,6 +75,9 @@ const LoginPage = () => {
             }
           ></Input>
           <Button onClick={onLogin}>Login</Button>
+          <div>
+            {error ?? <h1 className="text-sm text-red-500">{errorMessage}</h1>}
+          </div>
         </CardContent>
       </Card>
     </div>
