@@ -37,7 +37,7 @@ const LoginPage = () => {
         });
         setTimeout(() => {
           router.push("/");
-        }, 2000);
+        }, 500);
       }
     } catch (error) {
       if (isAxiosError(error)) {
