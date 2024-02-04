@@ -1,5 +1,10 @@
+import AddAttendanceForm from "@/components/attendance/addAttendanceForm";
 const AttendancePage = () => {
-  return <div>AttendancePage</div>;
+  return (
+    <div>
+      <AddAttendanceForm />
+    </div>
+  );
 };
 
 export default AttendancePage;

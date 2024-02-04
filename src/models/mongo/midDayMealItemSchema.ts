@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const midDayMealItemSchema = new mongoose.Schema({
   highSchoolId: String,
-  item: String,
+  itemName: String,
   totalStock: Number,
   date: Date,
 });
