@@ -21,6 +21,7 @@ const LoginPage = () => {
   const [user, setUser] = useState({
     userName: "",
     password: "",
+    type: "",
   });
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -30,6 +31,7 @@ const LoginPage = () => {
       const url = domain + "/api/users/login";
 
       const response = await axios.post(url, user);
+
       if (response.status == 200) {
         toast({
           title: "Success",

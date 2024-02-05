@@ -21,7 +21,7 @@ const Header = () => {
     try {
       const domain = process.env.PRODUCTION_URL || "";
       const url = domain + "/api/users/logout";
-      const response = await axios.post(url);
+      const response = await axios.post(url, { type: "" });
       if (response.status == 200) {
         toast({
           title: "Goodbye",

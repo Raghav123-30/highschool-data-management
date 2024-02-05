@@ -1,11 +1,11 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/utils/db";
 import { highSchool } from "@/models/mongo/highSchoolSchema";
 import bcryptjs from "bcryptjs";
 export async function POST(request: NextRequest) {
   try {
-    const response = NextResponse.json({ message: "success" }, { status: 200 });
-    const { userName, password } = await request.json();
+    const { userName, password, type } = await request.json();
 
     await connectToDatabase();
     const currentHighSchool = await highSchool
@@ -18,15 +18,19 @@ export async function POST(request: NextRequest) {
     );
 
     if (isPasswordValid) {
-      response.cookies.set("token", "dwidiwhdiw", { httpOnly: true });
-      response.cookies.set("highSchoolId", currentHighSchool._id, {
-        httpOnly: true,
-        sameSite: false,
-      });
-    }
-    console.log(request.cookies.get("highSchoolId")?.value);
+      const response = NextResponse.json({ status: 200 });
 
-    return response;
+      cookies().set("token", "dwidiwhdiw", { httpOnly: true });
+      cookies().set("highSchoolId", currentHighSchool.highSchoolId, {
+        httpOnly: true,
+      });
+      console.log(
+        `cookie from login route while logging in ${
+          cookies().get("highSchoolId")?.value
+        }`
+      );
+      return response;
+    }
   } catch (error) {
     return NextResponse.json(
       { message: "Invalid credentials" },

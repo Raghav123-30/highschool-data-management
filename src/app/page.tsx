@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import HomePageHeader from "@/components/home/homePageHeader";
 import HomePageFilter from "@/components/home/homePageFilter";
 import MonthlyAttendanceChart from "@/components/charts/monthlyAttendanceChart";
-import YearlyAttendanceChart from "@/components/charts/yearlyAttendanceChart";
+
 import DatePicker from "@/components/datePicker";
 
 const HomePage = async () => {
@@ -23,7 +23,6 @@ const HomePage = async () => {
         <div className="flex justify-start">{/* <HomePageFilter /> */}</div>
         <div className="flex flex-col  gap-4 ">
           <MonthlyAttendanceChart />
-          <YearlyAttendanceChart />
         </div>
       </CardContent>
     </Card>

@@ -1,5 +1,5 @@
 export const QUANTITY = {
-  WHEAT: { name: "wheat", requirement: 150 },
+  WHEAT: { name: "Wheat", requirement: 150 },
   RICE: { name: "Rice", requirement: 150 },
   DAL: { name: "Dal", requirement: 30 },
   OIL: { name: "Oil", requirement: 7.5 },

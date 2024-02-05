@@ -3,7 +3,8 @@ import MidDayMealTable from "@/components/midDayMeal/midDayMealTable";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
 const MidDayMealPage = () => {
-  let isAttendanceAdded = false;
+  let isAttendanceAdded = true;
+
   return (
     <Card>
       <CardHeader>

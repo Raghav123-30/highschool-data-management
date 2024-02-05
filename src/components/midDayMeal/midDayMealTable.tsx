@@ -9,10 +9,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import axios, { isAxiosError } from "axios";
+import { useState, useEffect } from "react";
 
 const MidDayMealTable = () => {
   const [mealData, setMealData] = useState([]);
+  useEffect(() => {
+    async function oneMoreAttempt() {
+      try {
+        const domain = process.env.PRODUCTION_URL || "";
+        let url = domain + "/api/users/me";
+        const response = await axios.get(url);
+        const highSchoolId = response.data.highSchoolId;
+        console.log(highSchoolId);
+      } catch (error) {}
+    }
+    oneMoreAttempt();
+  }, []);
   return (
     <Table>
       <TableCaption>{"Today's mid day meal report"}</TableCaption>
