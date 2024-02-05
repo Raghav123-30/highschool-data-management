@@ -21,7 +21,6 @@ const LoginPage = () => {
   const [user, setUser] = useState({
     userName: "",
     password: "",
-    type: "",
   });
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");

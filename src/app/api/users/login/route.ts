@@ -5,7 +5,7 @@ import { highSchool } from "@/models/mongo/highSchoolSchema";
 import bcryptjs from "bcryptjs";
 export async function POST(request: NextRequest) {
   try {
-    const { userName, password, type } = await request.json();
+    const { userName, password } = await request.json();
 
     await connectToDatabase();
     const currentHighSchool = await highSchool

@@ -1,9 +1,23 @@
 import MidDayMealHeader from "@/components/midDayMeal/midDayMealHeader";
 import MidDayMealTable from "@/components/midDayMeal/midDayMealTable";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import axios, { isAxiosError } from "axios";
 
-const MidDayMealPage = () => {
-  let isAttendanceAdded = true;
+const MidDayMealPage = async () => {
+  let isAttendanceAdded = false;
+  try {
+    const domain = process.env.PRODUCTION_URL || "";
+    const url = domain + "/api/attendance";
+    const response = await axios.get(url);
+    if (response.status == 200) {
+      console.log("attendance added");
+      isAttendanceAdded = true;
+    }
+  } catch (error) {
+    if (isAxiosError(error)) {
+      console.log(error.response?.data.message);
+    }
+  }
 
   return (
     <Card>

@@ -24,7 +24,12 @@ const MidDayMealHeader = ({
         </Button>
       )}
       {!showAddAttendanceButton && (
-        <Button className="text-white flex gap-2">
+        <Button
+          className="text-white flex gap-2"
+          onClick={() => {
+            router.push(routes.ADDSTOCKPAGE);
+          }}
+        >
           <PlusIcon className="w-5 h-5" />
           <p>Add Stock</p>
         </Button>

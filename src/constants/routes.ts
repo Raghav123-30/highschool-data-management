@@ -4,4 +4,5 @@ export const routes = {
   INVESTMENTPAGE: "/investment",
   MIDDAYMEAL: "/mid-day-meal",
   ATTENDANCE: "/attendance",
+  ADDSTOCKPAGE: "/add-stock",
 };

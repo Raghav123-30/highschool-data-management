@@ -4,8 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-
+import { useToast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 const AddAttendanceForm = () => {
+  const router = useRouter();
+  const { toast } = useToast();
   const [attendance, setAttendance] = useState({
     classEighth: "",
     classNinth: "",
@@ -21,7 +25,36 @@ const AddAttendanceForm = () => {
       const totalAttendance =
         eighthClassAttendance + ninthClassAttendance + tenthClassAttendance;
       console.log(totalAttendance);
-    } catch (error) {}
+      if (
+        eighthClassAttendance >= 0 &&
+        ninthClassAttendance >= 0 &&
+        tenthClassAttendance >= 0
+      ) {
+        setError(false);
+        const domain = process.env.PRODUCTION_URL || "";
+        const url = domain + "/api/attendance";
+        const result = await axios.post(url, {
+          numberOfAttendees: totalAttendance,
+        });
+
+        if (result.status == 201) {
+          toast({
+            title: "Success",
+            description: "attendance data succesfully submitted",
+          });
+          setTimeout(() => {
+            router.push("/");
+          }, 250);
+        }
+      } else {
+        console.log("invalid values");
+        setErrorMessage("Provide valid attendance values");
+        setError(true);
+      }
+    } catch (error) {
+      setErrorMessage("Something went wrong");
+      setError(true);
+    }
   };
   return (
     <Card className="max-w-2xl mx-auto">
@@ -74,7 +107,7 @@ const AddAttendanceForm = () => {
         <div className="space-y-1">
           <Button onClick={onAttendanceAdded}>Submit</Button>
         </div>
-        {error ?? <p className="text-sm text-red-500">{errorMessage}</p>}
+        {error && <h1 className="text-sm text-red-500">{errorMessage}</h1>}
       </CardContent>
     </Card>
   );
