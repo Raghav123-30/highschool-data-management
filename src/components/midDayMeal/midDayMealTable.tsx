@@ -4,6 +4,7 @@ import {
   Table,
   TableBody,
   TableCaption,
+  TableCell,
   TableFooter,
   TableHead,
   TableHeader,
@@ -16,16 +17,19 @@ import { useState, useEffect } from "react";
 const MidDayMealTable = () => {
   const [mealData, setMealData] = useState<meal[]>([]);
   useEffect(() => {
-    async function oneMoreAttempt() {
+    const getMidDayMealData = async () => {
       try {
         const domain = process.env.PRODUCTION_URL || "";
-        let url = domain + "/api/users/me";
+        const url = domain + "/api/mid-day-meal";
         const response = await axios.get(url);
-        const highSchoolId = response.data.highSchoolId;
-        console.log(highSchoolId);
-      } catch (error) {}
-    }
-    oneMoreAttempt();
+        setMealData(response.data.midDayMealData);
+      } catch (error) {
+        if (isAxiosError(error)) {
+          console.log(error.response?.data.message);
+        }
+      }
+    };
+    getMidDayMealData();
   }, []);
 
   return (
@@ -40,7 +44,17 @@ const MidDayMealTable = () => {
           <TableHead>{"Balance(gm)"}</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody></TableBody>
+      <TableBody>
+        {mealData.map((item, index) => (
+          <TableRow key={item._id}>
+            <TableCell>{index + 1}</TableCell>
+            <TableCell>{item.itemName}</TableCell>
+            <TableCell>{item.totalStock + item.usedQuantity}</TableCell>
+            <TableCell>{item.usedQuantity}</TableCell>
+            <TableCell>{item.totalStock}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
       <TableFooter></TableFooter>
     </Table>
   );

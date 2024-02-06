@@ -11,8 +11,27 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
+import { useToast } from "./ui/use-toast";
+import axios from "axios";
 
 const Rollback = () => {
+  const router = useRouter();
+  const { toast } = useToast();
+  const onRollback = async () => {
+    try {
+      const domain = process.env.PRODUCTION_URL || "";
+      const url = domain + "/api/rollback";
+      const response = await axios.delete(url);
+      if (response.status == 201) {
+        toast({
+          title: "Success",
+          description: "Rollback successfull",
+        });
+        router.refresh();
+      }
+    } catch (error) {}
+  };
   return (
     <AlertDialog>
       <AlertDialogTrigger>
@@ -32,7 +51,7 @@ const Rollback = () => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={onRollback}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

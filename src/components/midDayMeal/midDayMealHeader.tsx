@@ -3,6 +3,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { routes } from "@/constants/routes";
+import Rollback from "../rollback";
 type MidDayMealHeaderProps = {
   showAddAttendanceButton: boolean;
 };
@@ -24,15 +25,18 @@ const MidDayMealHeader = ({
         </Button>
       )}
       {!showAddAttendanceButton && (
-        <Button
-          className="text-white flex gap-2"
-          onClick={() => {
-            router.push(routes.ADDSTOCKPAGE);
-          }}
-        >
-          <PlusIcon className="w-5 h-5" />
-          <p>Add Stock</p>
-        </Button>
+        <div className="flex gap-2 items-center">
+          <Button
+            className="text-white flex gap-2"
+            onClick={() => {
+              router.push(routes.ADDSTOCKPAGE);
+            }}
+          >
+            <PlusIcon className="w-5 h-5" />
+            <p>Add Stock</p>
+          </Button>
+          <Rollback />
+        </div>
       )}
     </div>
   );

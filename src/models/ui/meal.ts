@@ -1,7 +1,8 @@
 export type meal = {
-  id: string;
+  _id: string;
   itemName: string;
   totalStock: number;
   totalStudents: string;
+  usedQuantity: number;
   date: string;
 };

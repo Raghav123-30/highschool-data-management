@@ -1,6 +1,7 @@
 import { QUANTITY, INVESTMENT } from "@/constants/expense";
 import { attendance } from "@/models/mongo/attendanceSchema";
 import { investment } from "@/models/mongo/investmentSchema";
+import { midDayMeal } from "@/models/mongo/midDayMealItemSchema";
 import { connectToDatabase } from "@/utils/db";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -50,19 +51,61 @@ export async function POST(request: NextRequest) {
       numberOfAttendees: numberOfAttendees,
       date: date,
     });
-    const wheatUsed = QUANTITY.WHEAT.requirement * numberOfAttendees;
-    const riceUsed = QUANTITY.RICE.requirement * numberOfAttendees;
-    const oilUsed = QUANTITY.OIL.requirement * numberOfAttendees;
-    const dalUsed = QUANTITY.DAL.requirement * numberOfAttendees;
-    const milkUsed = QUANTITY.MILK.requirement * numberOfAttendees;
 
     const mealItems = [
-      QUANTITY.WHEAT.name,
-      QUANTITY.RICE.name,
-      QUANTITY.OIL.name,
-      QUANTITY.DAL.name,
-      QUANTITY.MILK.name,
+      QUANTITY.WHEAT,
+      QUANTITY.RICE,
+      QUANTITY.OIL,
+      QUANTITY.DAL,
+      QUANTITY.MILK,
     ];
+    const midDayMealDocs = await midDayMeal.aggregate([
+      {
+        $match: {
+          itemName: { $in: mealItems.map((item) => item.name) },
+        },
+      },
+      {
+        $sort: { date: -1 },
+      },
+      {
+        $group: {
+          _id: "$itemName",
+          latestDocument: { $first: "$$ROOT" },
+        },
+      },
+    ]);
+    const allDocs = await midDayMeal.find();
+
+    const calcIndividualRequirement = (itemName: string) => {
+      switch (itemName) {
+        case QUANTITY.MILK.name:
+          return QUANTITY.MILK.requirement * numberOfAttendees;
+        case QUANTITY.DAL.name:
+          return QUANTITY.DAL.requirement * numberOfAttendees;
+        case QUANTITY.OIL.name:
+          return QUANTITY.OIL.requirement * numberOfAttendees;
+        case QUANTITY.RICE.name:
+          return QUANTITY.RICE.requirement * numberOfAttendees;
+        case QUANTITY.WHEAT.name:
+          return QUANTITY.WHEAT.requirement * numberOfAttendees;
+        default:
+          return 0;
+      }
+    };
+    for (let item of midDayMealDocs) {
+      const oldDoc = item.latestDocument;
+
+      await midDayMeal.create({
+        itemName: oldDoc.itemName,
+        totalStock:
+          oldDoc.totalStock - calcIndividualRequirement(oldDoc.itemName),
+        totalStudents: numberOfAttendees,
+        highSchoolId: highSchoolId,
+        usedQuantity: calcIndividualRequirement(oldDoc.itemName),
+        date: new Date(),
+      });
+    }
 
     const expenseItems = [
       INVESTMENT.SALT,
