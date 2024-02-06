@@ -1,6 +1,7 @@
 import MidDayMealHeader from "@/components/midDayMeal/midDayMealHeader";
 import MidDayMealTable from "@/components/midDayMeal/midDayMealTable";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+
 import axios, { isAxiosError } from "axios";
 
 const MidDayMealPage = async () => {

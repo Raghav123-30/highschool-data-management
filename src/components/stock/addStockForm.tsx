@@ -6,23 +6,45 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import axios, { isAxiosError } from "axios";
-
+import { useToast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
 const AddStockForm = () => {
+  const router = useRouter();
+  const { toast } = useToast();
   const [stock, setStock] = useState({
-    wheat: "",
-    rice: "",
-    oil: "",
-    dal: "",
-    milk: "",
+    wheat: 0,
+    rice: 0,
+    oil: 0,
+    dal: 0,
+    milk: 0,
   });
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const onStockAdded = async () => {
     try {
-      const domain = process.env.PRODUCTION_URL || "";
-      const url = domain + "/api/midDayMealItem";
-      console.log(url);
-      await axios.get(url);
+      if (
+        stock.wheat >= 0 &&
+        stock.rice >= 0 &&
+        stock.oil >= 0 &&
+        stock.dal >= 0 &&
+        stock.milk >= 0
+      ) {
+        const domain = process.env.PRODUCTION_URL || "";
+        const url = domain + "/api/stock";
+        const response = await axios.post(url, stock);
+        if (response.status == 201) {
+          toast({
+            title: "Success",
+            description: "Stock has been updated successfully",
+          });
+          setTimeout(() => {
+            router.push("/");
+          }, 250);
+        }
+      } else {
+        setError(true);
+        setErrorMessage("Please provide valid values");
+      }
     } catch (error) {
       if (isAxiosError(error)) {
         setError(true);
@@ -42,11 +64,10 @@ const AddStockForm = () => {
           <label>{QUANTITY.WHEAT.name + "(gm)"}</label>
           <Input
             type="number"
-            value={stock.wheat}
             onChange={(e) =>
               setStock({
                 ...stock,
-                wheat: e.target.value,
+                wheat: Number(e.target.value),
               })
             }
           ></Input>
@@ -55,11 +76,10 @@ const AddStockForm = () => {
           <label>{QUANTITY.RICE.name + "(gm)"}</label>
           <Input
             type="number"
-            value={stock.rice}
             onChange={(e) =>
               setStock({
                 ...stock,
-                rice: e.target.value,
+                rice: Number(e.target.value),
               })
             }
           ></Input>
@@ -68,11 +88,10 @@ const AddStockForm = () => {
           <label>{QUANTITY.OIL.name + "(gm)"}</label>
           <Input
             type="number"
-            value={stock.oil}
             onChange={(e) =>
               setStock({
                 ...stock,
-                oil: e.target.value,
+                oil: Number(e.target.value),
               })
             }
           ></Input>
@@ -81,11 +100,10 @@ const AddStockForm = () => {
           <label>{QUANTITY.DAL.name + "(gm)"}</label>
           <Input
             type="number"
-            value={stock.dal}
             onChange={(e) =>
               setStock({
                 ...stock,
-                dal: e.target.value,
+                dal: Number(e.target.value),
               })
             }
           ></Input>
@@ -94,11 +112,10 @@ const AddStockForm = () => {
           <label>{QUANTITY.MILK.name + "(gm)"}</label>
           <Input
             type="number"
-            value={stock.milk + "gm"}
             onChange={(e) =>
               setStock({
                 ...stock,
-                milk: e.target.value,
+                milk: Number(e.target.value),
               })
             }
           ></Input>
@@ -107,7 +124,7 @@ const AddStockForm = () => {
           <Button onClick={onStockAdded}>Submit</Button>
         </div>
         <div>
-          {error ?? <p className="text-sm text-red-500">{errorMessage}</p>}
+          {error && <p className="text-sm text-red-500">{errorMessage}</p>}
         </div>
       </CardContent>
     </Card>

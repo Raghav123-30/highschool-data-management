@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const investmentSchema = new mongoose.Schema({
   highSchoolId: String,
-  item: String,
+  itemName: String,
   studentCount: Number,
   totalExpense: Number,
   date: Date,

@@ -9,11 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { meal } from "@/models/ui/meal";
 import axios, { isAxiosError } from "axios";
 import { useState, useEffect } from "react";
 
 const MidDayMealTable = () => {
-  const [mealData, setMealData] = useState([]);
+  const [mealData, setMealData] = useState<meal[]>([]);
   useEffect(() => {
     async function oneMoreAttempt() {
       try {
@@ -26,6 +27,7 @@ const MidDayMealTable = () => {
     }
     oneMoreAttempt();
   }, []);
+
   return (
     <Table>
       <TableCaption>{"Today's mid day meal report"}</TableCaption>

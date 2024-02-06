@@ -1,4 +1,6 @@
+import { QUANTITY, INVESTMENT } from "@/constants/expense";
 import { attendance } from "@/models/mongo/attendanceSchema";
+import { investment } from "@/models/mongo/investmentSchema";
 import { connectToDatabase } from "@/utils/db";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -48,7 +50,37 @@ export async function POST(request: NextRequest) {
       numberOfAttendees: numberOfAttendees,
       date: date,
     });
-    console.log(document);
+    const wheatUsed = QUANTITY.WHEAT.requirement * numberOfAttendees;
+    const riceUsed = QUANTITY.RICE.requirement * numberOfAttendees;
+    const oilUsed = QUANTITY.OIL.requirement * numberOfAttendees;
+    const dalUsed = QUANTITY.DAL.requirement * numberOfAttendees;
+    const milkUsed = QUANTITY.MILK.requirement * numberOfAttendees;
+
+    const mealItems = [
+      QUANTITY.WHEAT.name,
+      QUANTITY.RICE.name,
+      QUANTITY.OIL.name,
+      QUANTITY.DAL.name,
+      QUANTITY.MILK.name,
+    ];
+
+    const expenseItems = [
+      INVESTMENT.SALT,
+      INVESTMENT.SUGAR,
+      INVESTMENT.VEGETABLES,
+      INVESTMENT.BANANA,
+      INVESTMENT.CHIKKI,
+      INVESTMENT.MASALA,
+    ];
+    for (let item of expenseItems) {
+      await investment.create({
+        highSchoolId: highSchoolId,
+        itemName: item.name,
+        studentCount: numberOfAttendees,
+        totalExpense: item.expense * numberOfAttendees,
+        date: new Date(),
+      });
+    }
     return NextResponse.json(
       { message: "Attendane data is submitted successfully" },
       { status: 201 }
